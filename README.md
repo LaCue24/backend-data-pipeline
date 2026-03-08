@@ -1,2 +1,16 @@
-# backend-data-pipeline
-Python backend data pipeline that ingests external API data, validates records, stores results in PostgreSQL, and exposes a FastAPI service with automated CI/CD testing.
+Backend Data Pipeline
+
+This project demonstrates a backend data pipeline that:
+
+• Ingests external API data
+• Validates data records
+• Exposes backend endpoints using FastAPI
+• Includes automated testing
+
+Tech Stack
+
+Python
+FastAPI
+Pytest
+REST APIs
+Backend Data Processing
