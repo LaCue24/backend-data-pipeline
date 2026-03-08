@@ -1,31 +1,21 @@
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI
 from app.database import engine, Base, SessionLocal
 from app.models import Post
-from app.ingestion import fetch_data, save_posts
-from app.logger import logger
+from app.queue_worker import job_queue, start_worker
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-
-def run_pipeline():
-
-    logger.info("Starting background pipeline")
-
-    data = fetch_data()
-
-    save_posts(data)
-
-    logger.info("Pipeline completed successfully")
+start_worker()
 
 
 @app.get("/run-pipeline")
-def trigger_pipeline(background_tasks: BackgroundTasks):
+def trigger_pipeline():
 
-    background_tasks.add_task(run_pipeline)
+    job_queue.put("run_pipeline")
 
-    return {"message": "Pipeline started in background"}
+    return {"message": "Pipeline job submitted to worker queue"}
 
 
 @app.get("/posts")
